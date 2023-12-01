@@ -1,7 +1,7 @@
 # Advanced-Financial-Modeling
 Cody Heiland Personal Project
 import yahoo_fin.stock_info as si
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import Flask, render_template_string
 import plotly.graph_objects as go
 import plotly.offline as pyo
@@ -18,6 +18,7 @@ def get_stock_info(symbol):
     except Exception as e:
         print(f"Error fetching data for {symbol}: {e}")
         return 'N/A', 'N/A', 'N/A'
+
 def get_monthly_change(symbol):
     first_of_month = datetime.now().replace(day=1)
     try:
@@ -43,7 +44,8 @@ def get_annual_change(symbol):
     return None
 
 def get_daily_and_ytd_percentage_changes():
-    symbols = ['AAPL',	'MSFT',	'AMZN',	'NVDA',	'GOOGL',	'TSLA',	'GOOG',	'META',	'BRK-B',	'XOM',	'UNH',	'LLY',	'JPM',	'JNJ',	'V',	'PG',	'AVGO',	'MA',	'CVX',	'HD',	'ABBV',	'MRK',	'COST',	'PEP',	'WMT',	'ADBE',	'KO',	'CSCO',	'ACN',	'CRM',	'TMO',	'MCD',	'BAC',	'CMCSA',	'LIN',	'PFE',	'NFLX',	'ABT',	'ORCL',	'DHR',	'AMD',	'WFC',	'COP',	'DIS',	'INTC',	'AMGN',	'TXN',	'INTU',	'PM',	'CAT',	'VZ',	'IBM',	'HON',	'UNP',	'QCOM',	'NEE',	'LOW',	'BMY',	'GE',	'SPGI',	'AMAT',	'NOW',	'BA',	'UPS',	'BKNG',	'NKE',	'T',	'GS',	'RTX',	'ELV',	'DE',	'SBUX',	'MS',	'MDT',	'PLD',	'ISRG',	'TJX',	'ADP',	'MMC',	'MDLZ',	'GILD',	'LMT',	'BLK',	'VRTX',	'SYK',	'CVS',	'REGN',	'AXP',	'CB',	'ADI',	'SLB',	'ETN',	'CI',	'PGR',	'LRCX',	'SCHW',	'ZTS',	'C',	'BSX',	'BX',	'EOG',	'BDX',	'MU',	'AMT',	'MO',	'TMUS',	'CME',	'SO',	'PANW',	'DUK',	'FI',	'SNPS',	'LULU',	'AON',	'EQIX',	'ITW',	'APD',	'PYPL',	'CDNS',	'NOC',	'ICE',	'HUM',	'MPC',	'KLAC',	'FDX',	'CSX',	'MCK',	'SHW',	'CL',	'ABNB',	'WM',	'EMR',	'ORLY',	'PXD',	'PSX',	'FCX',	'MMM',	'ROP',	'VLO',	'NXPI',	'TGT',	'PH',	'USB',	'GD',	'CMG',	'HCA',	'AJG',	'MCO',	'APH',	'F',	'MAR',	'PNC',	'TDG',	'CARR',	'AZO',	'TT',	'MSI',	'ANET',	'NSC',	'GM',	'PCAR',	'CHTR',	'HES',	'SRE',	'OXY',	'AIG',	'ADSK',	'EW',	'ECL',	'PSA',	'MCHP',	'AFL',	'CTAS',	'WELL',	'WMB',	'KMB',	'ADM',	'MSCI',	'STZ',	'ON',	'MET',	'MNST',	'HLT',	'AEP',	'CCI',	'EXC',	'NUE',	'TRV',	'D',	'TEL',	'HAL',	'CNC',	'FTNT',	'OKE',	'GIS',	'CPRT',	'PAYX',	'BIIB',	'TFC',	'ROST',	'JCI',	'IQV',	'COF',	'BKR',	'IDXX',	'CTVA',	'DOW',	'ODFL',	'CEG',	'DXCM',	'SPG',	'DLR',	'O',	'KVUE',	'VRSK',	'CTSH',	'PCG',	'PRU',	'AME',	'YUM',	'DD',	'AMP',	'LHX',	'FIS',	'SYY',	'MRNA',	'BK',	'A',	'OTIS',	'ROK',	'DHI',	'CMI',	'EL',	'KMI',	'KDP',	'FAST',	'XEL',	'DVN',	'GWW',	'CSGP',	'COR',	'URI',	'HSY',	'ACGL',	'PPG',	'GPN',	'ED',	'NEM',	'RSG',	'ALL',	'EA',	'VICI',	'KR',	'PEG',	'LEN',	'FANG',	'WST',	'PWR',	'IT',	'APTV',	'VMC',	'KHC',	'GEHC',	'CDW',	'FTV',	'IR',	'ANSS',	'EXR',	'WEC',	'MLM',	'EIX',	'AWK',	'WBD',	'LYB',	'MTD',	'AVB',	'DAL',	'TROW',	'KEYS',	'ZBH',	'DG',	'GLW',	'EBAY',	'CBRE',	'WY',	'CHD',	'CAH',	'HPQ',	'EFX',	'TSCO',	'WTW',	'HPE',	'FICO',	'DLTR',	'HIG',	'RMD',	'TTWO',	'RCL',	'XYL',	'ALGN',	'STE',	'BR',	'DFS',	'STT',	'SBAC',	'MPWR',	'ILMN',	'DTE',	'MTB',	'CTRA',	'ES',	'GPC',	'EQR',	'ETR',	'DOV',	'AEE',	'ULTA',	'TDY',	'NVR',	'TRGP',	'MOH',	'WAB',	'FLT',	'ALB',	'BAX',	'RJF',	'MKC',	'INVH',	'FE',	'LH',	'HWM',	'VRSN',	'PPL',	'IRM',	'J',	'IFF',	'CNP',	'DRI',	'HOLX',	'FSLR',	'EXPD',	'BRO',	'FDS',	'FITB',	'VTR',	'MRO',	'STLD',	'BG',	'PTC',	'EG',	'CINF',	'ENPH',	'NDAQ',	'AKAM',	'CBOE',	'CF',	'WAT',	'PHM',	'TYL',	'PFG',	'CLX',	'LUV',	'RF',	'GRMN',	'ATO',	'NTAP',	'TXT',	'COO',	'K',	'IEX',	'CMS',	'SWKS',	'ARE',	'JBHT',	'LVS',	'BALL',	'WBA',	'TER',	'MAA',	'EPAM',	'AVY',	'OMC',	'HBAN',	'EQT',	'TSN',	'WDC',	'NTRS',	'CCL',	'EXPE',	'UAL',	'DGX',	'AXON',	'PKG',	'RVTY',	'SNA',	'POOL',	'ESS',	'DPZ',	'AMCR',	'BBY',	'APA',	'LW',	'WRB',	'CAG',	'LKQ',	'SJM',	'SWK',	'SYF',	'KMX',	'LDOS',	'STX',	'PAYC',	'CE',	'TRMB',	'LNT',	'CFG',	'IP',	'MAS',	'NDSN',	'L',	'EVRG',	'MOS',	'TAP',	'ZBRA',	'VTRS',	'LYV',	'HST',	'PODD',	'MTCH',	'IPG',	'HRL',	'INCY',	'UDR',	'JKHY',	'KIM',	'AES',	'TECH',	'PNR',	'ROL',	'MGM',	'CDAY',	'BF.B',	'NI',	'GEN',	'CHRW',	'CPT',	'CRL',	'PEAK',	'CZR',	'REG',	'KEY',	'HSIC',	'GL',	'BWA',	'FFIV',	'QRVO',	'TFX',	'ALLE',	'WRK',	'EMN',	'WYNN',	'NRG',	'JNPR',	'PNW',	'HAS',	'CTLT',	'AAL',	'FMC',	'CPB',	'AOS',	'BXP',	'HII',	'FOXA',	'RHI',	'AIZ',	'UHS',	'ETSY',	'MKTX',	'NWSA',	'BIO',	'BBWI',	'XRAY',	'SEDG',	'WHR',	'BEN',	'GNRC',	'NCLH',	'FRT',	'TPR',	'IVZ',	'PARA',	'VFC',	'CMA',	'DVA',	'ZION',	'RL',	'SEE',	'ALK',	'MHK',	'OGN',	'DXC',	'FOX',	'NWS']  # ... add all S&P 500 symbols here
+    # Get the list of all S&P 500 symbols
+    symbols = si.tickers_sp500()
 
     changes = []
 
@@ -77,6 +79,7 @@ def get_daily_and_ytd_percentage_changes():
         except Exception as e:
             print(f"Error fetching YTD data for {symbol}: {e}")
         return None
+
     for i in range(len(top_10_gains)):
         symbol = top_10_gains[i][0]
         ytd_change = get_ytd_change(symbol)
@@ -166,3 +169,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
